@@ -24,7 +24,8 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
     options.SuppressModelStateInvalidFilter = true;
 });
 
-DependencyInjectionConfig.ResolveDependencies(builder.Services);
+//DependencyInjectionConfig.ResolveDependencies(builder.Services);
+builder.Services.ResolveDependencies();
 
 
 
