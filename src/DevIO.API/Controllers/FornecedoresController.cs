@@ -16,16 +16,22 @@ public class FornecedoresController : MainController
     private readonly IMapper _mapper;
     private readonly IFornecedorService _fornecedorService;
     private readonly IEnderecoRepository _enderecoRepository;
-
-    public FornecedoresController(IFornecedorRepository fornecedorRepository, IMapper mapper, IFornecedorService fornecedorService, IEnderecoRepository enderecoRepository, INotificador notificador) : base(notificador)
+    private readonly IUser _user;
+    public FornecedoresController(IFornecedorRepository fornecedorRepository, 
+                                  IMapper mapper,
+                                  IFornecedorService fornecedorService,
+                                  IEnderecoRepository enderecoRepository,
+                                  INotificador notificador,
+                                  IUser user) : base(notificador, user)
     {
         _fornecedorRepository = fornecedorRepository;
         _mapper = mapper;
         _fornecedorService = fornecedorService;
         _enderecoRepository = enderecoRepository;
+        _user = user;
     }
-    
-  
+
+
     [HttpGet]
     public async Task<IEnumerable<FornecedorViewModel>> ObterTodos()
     {
@@ -48,6 +54,9 @@ public class FornecedoresController : MainController
     [HttpPost]
     public async Task<ActionResult> Adicionar(FornecedorViewModel fornecedorViewModel)
     {
+
+     
+
         if (!ModelState.IsValid) return CustomResponse(ModelState);
 
         await _fornecedorService.Adicionar(_mapper.Map<Fornecedor>(fornecedorViewModel));

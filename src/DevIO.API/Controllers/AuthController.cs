@@ -17,14 +17,17 @@ namespace DevIO.API.Controllers
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly AppSettings _appSettings;
+        private readonly IUser _user;
         public AuthController(INotificador notificador,
                               SignInManager<IdentityUser> signInManager,
                               UserManager<IdentityUser> userManager,
-                              IOptions<AppSettings> appSettings) : base(notificador)
+                              IOptions<AppSettings> appSettings,
+                              IUser user) : base(notificador, user)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _appSettings = appSettings.Value;
+            _user = user;   
         }
 
         [HttpPost("nova-conta")]

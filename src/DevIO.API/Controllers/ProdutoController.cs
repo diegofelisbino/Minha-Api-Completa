@@ -15,11 +15,17 @@ namespace DevIO.API.Controllers
         private readonly IProdutoRepository _produtoRepository;
         private readonly IMapper _mapper;
         private readonly IProdutoService _produtoService;
-        public ProdutoController(INotificador notificador, IProdutoRepository produtoRepository, IProdutoService produtoService, IMapper mapper ) : base(notificador)
+        private readonly IUser _user;
+        public ProdutoController(INotificador notificador, 
+                                 IProdutoRepository produtoRepository, 
+                                 IProdutoService produtoService, 
+                                 IMapper mapper,
+                                 IUser user) : base(notificador, user)
         {
             _produtoRepository = produtoRepository;
             _mapper = mapper;
             _produtoService = produtoService;
+            _user = user;
         }
 
         [HttpGet]
