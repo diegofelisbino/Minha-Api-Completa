@@ -14,7 +14,7 @@ namespace DevIO.API.Configuration
             {
                 c.OperationFilter<SwaggerDefaultValues>();
 
-                /*c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Description = "Insira o token JWT desta maneira: Bearer {seu token}",
                     Name = "Authorization",
@@ -37,7 +37,7 @@ namespace DevIO.API.Configuration
                         },
                         new string[] {}
                     }
-                });*/
+                });
             });
 
             return services;
