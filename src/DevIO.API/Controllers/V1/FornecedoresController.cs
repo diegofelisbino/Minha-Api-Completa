@@ -6,10 +6,11 @@ using DevIO.Business.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DevIO.API.Controllers;
+namespace DevIO.API.Controllers.V1;
 
 [Authorize]
-[Route("api/[controller]")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/[controller]")]
 public class FornecedoresController : MainController
 {
     private readonly IFornecedorRepository _fornecedorRepository;
@@ -17,7 +18,7 @@ public class FornecedoresController : MainController
     private readonly IFornecedorService _fornecedorService;
     private readonly IEnderecoRepository _enderecoRepository;
     private readonly IUser _user;
-    public FornecedoresController(IFornecedorRepository fornecedorRepository, 
+    public FornecedoresController(IFornecedorRepository fornecedorRepository,
                                   IMapper mapper,
                                   IFornecedorService fornecedorService,
                                   IEnderecoRepository enderecoRepository,
@@ -31,7 +32,7 @@ public class FornecedoresController : MainController
         _user = user;
     }
 
-
+    [AllowAnonymous]
     [HttpGet]
     public async Task<IEnumerable<FornecedorViewModel>> ObterTodos()
     {
@@ -50,12 +51,12 @@ public class FornecedoresController : MainController
         return Ok(fornecedor);
     }
 
-    [ClaimsAuthorize("Fornecedor","Adicionar")]
+    [ClaimsAuthorize("Fornecedor", "Adicionar")]
     [HttpPost]
     public async Task<ActionResult> Adicionar(FornecedorViewModel fornecedorViewModel)
     {
 
-     
+
 
         if (!ModelState.IsValid) return CustomResponse(ModelState);
 
@@ -105,7 +106,7 @@ public class FornecedoresController : MainController
         if (id != enderecoViewModel.Id) return BadRequest();
 
         if (!ModelState.IsValid) return CustomResponse(ModelState);
-        
+
         await _fornecedorService.AtualizarEndereco(_mapper.Map<Endereco>(enderecoViewModel));
 
         return CustomResponse(enderecoViewModel);

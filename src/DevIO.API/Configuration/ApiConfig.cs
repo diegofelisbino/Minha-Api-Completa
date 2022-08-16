@@ -11,27 +11,62 @@ namespace DevIO.API.Configuration
 
             services.AddMvc();
 
+            services.AddApiVersioning(options =>
+            {
+                options.AssumeDefaultVersionWhenUnspecified = true;
+                options.DefaultApiVersion = new ApiVersion(1, 0);
+                options.ReportApiVersions = true;   
+            });
+
+            services.AddVersionedApiExplorer(options =>
+            {
+                options.GroupNameFormat = "'v'VVV";
+                options.SubstituteApiVersionInUrl = true;
+            });
+
             services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.SuppressModelStateInvalidFilter = true;
             });
 
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             services.AddEndpointsApiExplorer();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("Development",
+                    builder =>
+                        builder
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
+
+                options.AddPolicy("Production",
+                   builder =>
+                       builder
+                           .WithMethods("GET")
+                           .WithOrigins("http://desenvolvedor.io")
+                           .SetIsOriginAllowedToAllowWildcardSubdomains()
+                           //.WithHeaders(HeaderNames.ContentType, "x-custom-header")
+                           .AllowAnyHeader());
+            });
+
+
 
 
             return services;
         }
 
         public static IApplicationBuilder UseApiConfig(this IApplicationBuilder app, IWebHostEnvironment env)
-        {   
+        {
             if (env.IsDevelopment())
             {
+                app.UseCors("Development");
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
             else
             {
+                app.UseCors("Production");// Usar apenas nas demos => Configuração Ideal: 
                 app.UseHsts();
             }
 
@@ -41,8 +76,8 @@ namespace DevIO.API.Configuration
 
             app.UseAuthorization();
 
-           
-            
+
+
 
             return app;
         }

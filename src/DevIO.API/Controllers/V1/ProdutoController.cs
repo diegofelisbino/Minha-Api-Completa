@@ -3,12 +3,15 @@ using DevIO.API.ViewModels;
 using DevIO.Business.Intefaces;
 using DevIO.Business.Models;
 using DevIO.Business.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DevIO.API.Controllers
+namespace DevIO.API.Controllers.V1
 {
 
-    [Route("api/produtos")]
+    [Authorize]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/produtos")]
     public class ProdutoController : MainController
     {
 
@@ -16,9 +19,9 @@ namespace DevIO.API.Controllers
         private readonly IMapper _mapper;
         private readonly IProdutoService _produtoService;
         private readonly IUser _user;
-        public ProdutoController(INotificador notificador, 
-                                 IProdutoRepository produtoRepository, 
-                                 IProdutoService produtoService, 
+        public ProdutoController(INotificador notificador,
+                                 IProdutoRepository produtoRepository,
+                                 IProdutoService produtoService,
                                  IMapper mapper,
                                  IUser user) : base(notificador, user)
         {
@@ -31,10 +34,10 @@ namespace DevIO.API.Controllers
         [HttpGet]
         public async Task<IEnumerable<ProdutoViewModel>> ObterTodos()
         {
-            return _mapper.Map<IEnumerable<ProdutoViewModel>>(await _produtoRepository.ObterProdutosFornecedores());  
+            return _mapper.Map<IEnumerable<ProdutoViewModel>>(await _produtoRepository.ObterProdutosFornecedores());
         }
 
-        
+
         [HttpGet("{id:Guid}")]
         public async Task<ActionResult<ProdutoViewModel>> ObterPorId(Guid id)
         {
@@ -46,7 +49,7 @@ namespace DevIO.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult>Adicionar(ProdutoViewModel produtoViewModel)
+        public async Task<ActionResult> Adicionar(ProdutoViewModel produtoViewModel)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
@@ -63,7 +66,7 @@ namespace DevIO.API.Controllers
 
         //Excluir(id)
         [HttpDelete("{id:Guid}")]
-        public async Task<ActionResult<ProdutoViewModel>>Excluir(Guid id)
+        public async Task<ActionResult<ProdutoViewModel>> Excluir(Guid id)
         {
             var produtoViewModel = ObterProduto(id);
 

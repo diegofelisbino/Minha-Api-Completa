@@ -9,9 +9,10 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace DevIO.API.Controllers
+namespace DevIO.API.Controllers.V1
 {
-    [Route("api")]
+    [ApiVersion("1.0")]    
+    [Route("api/v{version:apiVersion}")]
     public class AuthController : MainController
     {
         private readonly SignInManager<IdentityUser> _signInManager;
@@ -27,7 +28,7 @@ namespace DevIO.API.Controllers
             _signInManager = signInManager;
             _userManager = userManager;
             _appSettings = appSettings.Value;
-            _user = user;   
+            _user = user;
         }
 
         [HttpPost("nova-conta")]
@@ -127,7 +128,7 @@ namespace DevIO.API.Controllers
             };
 
             return response;
-        }    
+        }
         private static long ToUnixEpochDate(DateTime date)
             => (long)Math.Round((date.ToUniversalTime() - new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero)).TotalSeconds);
     }
