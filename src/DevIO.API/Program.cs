@@ -1,6 +1,7 @@
 using DevIO.API.Configuration;
 using DevIO.Data.Context;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,14 +17,19 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddApiConfig();
 
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerConfig();
 
 builder.Services.ResolveDependencies();
 
+
+
 var app = builder.Build();
+var apiVersionDescriptionProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
+
+app.UseApiConfig(app.Environment);
+app.UseSwaggerConfig(apiVersionDescriptionProvider);
 
 app.MapControllers();
 
-app.UseApiConfig(app.Environment);
 
 app.Run();

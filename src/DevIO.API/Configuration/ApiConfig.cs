@@ -60,9 +60,7 @@ namespace DevIO.API.Configuration
         {
             if (env.IsDevelopment())
             {
-                app.UseCors("Development");
-                app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseCors("Development");                
             }
             else
             {
