@@ -3,7 +3,6 @@ using DevIO.API.Extensions;
 using DevIO.Data.Context;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,12 +21,7 @@ builder.Services.AddApiConfig();
 
 builder.Services.AddSwaggerConfig();
 
-builder.Services.AddLoggingConfiguration();
-
-builder.Services.AddHealthChecks()
-    .AddSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),name: "BancoSQL");
-
-//builder.Services.AddHealthChecksUI();
+builder.Services.AddLoggingConfiguration(builder.Configuration);
 
 builder.Services.ResolveDependencies();
 
@@ -46,14 +40,6 @@ app.MapControllers();
 
 app.UseLoggingConfiguration();
 
-app.UseHealthChecks("/api/hc", new HealthCheckOptions()
-{
-    Predicate = _ => true,
-    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-});
-/*app.UseHealthChecksUI(options => 
-{ 
-    options.UIPath = "/api/hc-ui";
-});*/
+
 
 app.Run();
