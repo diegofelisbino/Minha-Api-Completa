@@ -64,7 +64,7 @@ namespace DevIO.API.Configuration
             }
             else
             {
-                app.UseCors("Production");// Usar apenas nas demos => Configuração Ideal: 
+                app.UseCors("Development");// Usar apenas nas demos => Configuração Ideal: 
                 app.UseHsts();
             }
 

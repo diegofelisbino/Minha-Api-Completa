@@ -15,28 +15,28 @@ namespace DevIO.API.Configuration
                 o.LogId = new Guid("e624981c-efd5-43d0-a807-db8e21732c6b");
             });
 
-            //services.AddLogging(builder =>
-            //{
-            //    builder.AddElmahIo(o =>
-            //    {
-            //        o.ApiKey = "a655fb4a6e2c4547980e8c376af30ea4";
-            //        o.LogId = new Guid("e624981c-efd5-43d0-a807-db8e21732c6b");
-            //    });
-            //    builder.AddFilter<ElmahIoLoggerProvider>(null, LogLevel.Warning);
-            //});
-            //
+            services.AddLogging(builder =>
+            {
+                builder.AddElmahIo(o =>
+                {
+                    o.ApiKey = "a655fb4a6e2c4547980e8c376af30ea4";
+                    o.LogId = new Guid("e624981c-efd5-43d0-a807-db8e21732c6b");
+                });
+                builder.AddFilter<ElmahIoLoggerProvider>(null, LogLevel.Warning);
+            });
+
             services.AddHealthChecks()
-                .AddElmahIoPublisher( options =>
+                .AddElmahIoPublisher(options =>
                 {
                     options.ApiKey = "a655fb4a6e2c4547980e8c376af30ea4";
                     options.LogId = new Guid("e624981c-efd5-43d0-a807-db8e21732c6b");
                     options.HeartbeatId = "API Fornecedores";
-                })                
+                })
                 .AddCheck("Produtos", new SqlServerHealthCheck(configuration.GetConnectionString("DefaultConnection")))
                 .AddSqlServer(configuration.GetConnectionString("DefaultConnection"), name: "BancoSQL");
 
-            services.AddHealthChecksUI()
-                .AddSqlServerStorage(configuration.GetConnectionString("DefaultConnection"));
+            //services.AddHealthChecksUI()
+            //    .AddSqlServerStorage(configuration.GetConnectionString("DefaultConnection"));
 
             return services;
         }
@@ -51,16 +51,16 @@ namespace DevIO.API.Configuration
                 ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
             });
 
-            app.UseHealthChecksUI(options =>
-            {
-                options.UIPath = "/api/hc-ui";
+            //app.UseHealthChecksUI(options =>
+            //{
+            //    options.UIPath = "/api/hc-ui";
 
-                options.ResourcesPath = "/api/hc-ui-resources";
+            //    options.ResourcesPath = "/api/hc-ui-resources";
 
-                options.UseRelativeApiPath = false;
-                options.UseRelativeResourcesPath = false;
-                options.UseRelativeWebhookPath = false;
-            });
+            //    options.UseRelativeApiPath = false;
+            //    options.UseRelativeResourcesPath = false;
+            //    options.UseRelativeWebhookPath = false;
+            //});
 
 
 

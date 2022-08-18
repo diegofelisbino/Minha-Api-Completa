@@ -18,7 +18,7 @@ namespace DevIO.API.Controllers.V2
         public string Valor()
         {
 
-            throw new Exception("teste erro");
+            //throw new Exception("teste erro");
 
             //try
             //{
