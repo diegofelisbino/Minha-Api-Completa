@@ -40,6 +40,4 @@ app.MapControllers();
 
 app.UseLoggingConfiguration();
 
-
-
 app.Run();

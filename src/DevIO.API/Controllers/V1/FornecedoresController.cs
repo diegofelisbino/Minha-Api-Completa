@@ -65,7 +65,7 @@ public class FornecedoresController : MainController
         return CustomResponse(fornecedorViewModel);
     }
 
-    [ClaimsAuthorize("Fornecedor", "Atualizar")]
+    //[ClaimsAuthorize("Fornecedor", "Atualizar")]
     [HttpPut("{id:guid}")]
     public async Task<ActionResult> Atualizar(Guid id, FornecedorViewModel fornecedorViewModel)
     {

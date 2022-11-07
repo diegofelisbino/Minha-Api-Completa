@@ -35,8 +35,8 @@ namespace DevIO.API.Configuration
                 .AddCheck("Produtos", new SqlServerHealthCheck(configuration.GetConnectionString("DefaultConnection")))
                 .AddSqlServer(configuration.GetConnectionString("DefaultConnection"), name: "BancoSQL");
 
-            //services.AddHealthChecksUI()
-            //    .AddSqlServerStorage(configuration.GetConnectionString("DefaultConnection"));
+            services.AddHealthChecksUI()
+                .AddSqlServerStorage(configuration.GetConnectionString("DefaultConnection"));
 
             return services;
         }
@@ -51,16 +51,16 @@ namespace DevIO.API.Configuration
                 ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
             });
 
-            //app.UseHealthChecksUI(options =>
-            //{
-            //    options.UIPath = "/api/hc-ui";
+            app.UseHealthChecksUI(options =>
+            {
+                options.UIPath = "/api/hc-ui";
 
-            //    options.ResourcesPath = "/api/hc-ui-resources";
+                options.ResourcesPath = "/api/hc-ui-resources";
 
-            //    options.UseRelativeApiPath = false;
-            //    options.UseRelativeResourcesPath = false;
-            //    options.UseRelativeWebhookPath = false;
-            //});
+                options.UseRelativeApiPath = false;
+                options.UseRelativeResourcesPath = false;
+                options.UseRelativeWebhookPath = false;
+            });
 
 
 
